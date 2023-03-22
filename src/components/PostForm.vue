@@ -9,7 +9,7 @@
            class="input"
            type="text"
            placeholder="Описание">
-    <button class="btn" @click="createPost">Создать</button>
+    <my-button class="btn" @click="createPost" style="margin-top: 15px">Создать</my-button>
   </form>
 </template>
 
@@ -45,15 +45,9 @@ form {
 
 .input {
   width: 80%;
-  border: 1px solid forestgreen;
+  border: 3px double forestgreen;
   padding: 10px 15px;
   margin-top: 15px;
 }
-.btn {
-  margin-top: 15px;
-  align-self: center;
-  padding: 8px 20px;
-  background: none;
-  border: 1px solid forestgreen;
-}
+
 </style>
