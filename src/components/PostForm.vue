@@ -1,14 +1,12 @@
 <template>
   <form @submit.prevent>
     <h4>Создать пост</h4>
-    <input v-model="post.title"
-           class="input"
+    <my-input v-model="post.title"
            type="text"
-           placeholder="Название">
-    <input v-model="post.body"
-           class="input"
+           placeholder="Название"/>
+    <my-input v-model="post.body"
            type="text"
-           placeholder="Описание">
+           placeholder="Описание"/>
     <my-button class="btn" @click="createPost" style="margin-top: 15px">Создать</my-button>
   </form>
 </template>
@@ -43,11 +41,6 @@ form {
   align-items: center;
 }
 
-.input {
-  width: 80%;
-  border: 3px double forestgreen;
-  padding: 10px 15px;
-  margin-top: 15px;
-}
+
 
 </style>
