@@ -65,9 +65,18 @@ import axios from "axios";
     mounted() {
       this.fetchPosts()
     },
+    computed: {
+      sortedPosts() {
+        return [...this.posts].sort((a,b) => {
+          return a[this.selectedSort]?.localeCompare(b[this.selectedSort])
+        })
+      }
+     },
     watch: {
       selectedSort(newValue) {
-        console.log(newValue);
+        this.posts.sort((a,b) => {
+          return a[newValue]?.localeCompare(b[newValue])
+        })
       }
     }
   }
