@@ -1,14 +1,14 @@
 <template>
-<div class="page__wrapper" :value="modelValue">
-  <div v-for="page in pages"
-       :key="page"
-       class="page"
-       :class="{
-         'current-page': page === current
-       }"
-       @click="changePage(page)"
-  >{{page}}</div>
-</div>
+<!--<div class="page__wrapper" :value="modelValue">-->
+<!--  <div v-for="page in pages"-->
+<!--       :key="page"-->
+<!--       class="page"-->
+<!--       :class="{-->
+<!--         'current-page': page === current-->
+<!--       }"-->
+<!--       @click="changePage(page)"-->
+<!--  >{{page}}</div>-->
+<!--</div>-->
 </template>
 
 <script>
@@ -27,9 +27,9 @@ export default {
 
   },
   methods: {
-    changePage(page) {
-      this.$emit('update:modelValue', page)
-    }
+    // changePage(page) {
+    //  this.$emit('update:modelValue', page)
+    // }
   }
 }
 </script>

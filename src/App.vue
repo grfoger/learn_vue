@@ -18,6 +18,7 @@
     </my-dialog>
     <post-list :posts="sortedAndSearchedPosts" @remove="removePost" v-if="!isPostLoading"/>
     <div v-else>Идёт загрузка...</div>
+    <div ref="observer" class="observer"></div>
     <my-page v-model="page" :pages="totalPages" :current="page" @click="fetchPosts"></my-page>
   </div>
 </template>
@@ -77,10 +78,36 @@ import MyInput from "@/components/UI/MyInput";
         } finally {
           this.isPostLoading = false;
         }
+      },
+      async loadMorePosts() {
+        try {
+          this.page += 1;
+          const response = await axios.get("https://jsonplaceholder.typicode.com/posts", {
+            params: {
+              _page: this.page,
+              _limit: this.limit,
+            }
+          });
+          this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit);
+          this.posts = [...this.posts, ...response.data];
+        } catch (e) {
+          alert("Error")
+        }
       }
     },
     mounted() {
-      this.fetchPosts()
+      this.fetchPosts();
+      const options = {
+        rootMargin: '0px',
+        threshold: 1.0
+      };
+      const callback = (entries, observer) => {
+        if (entries[0].isIntersecting && this.page < this.totalPages) {
+          this.loadMorePosts()
+        }
+      };
+      const observer = new IntersectionObserver(callback, options);
+      observer.observe(this.$refs.observer);
     },
     computed: {
       sortedPosts() {
@@ -108,6 +135,10 @@ import MyInput from "@/components/UI/MyInput";
   margin: 15px 0;
   display: flex;
   justify-content: space-between;
+}
+.observer {
+  height: 30px;
+  background: green;
 }
 
 </style>
