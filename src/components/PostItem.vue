@@ -4,8 +4,9 @@
       <div><strong>Название: </strong> {{post.title}} </div>
       <div><strong>Описание: </strong> {{post.body}} </div>
     </div>
-    <div class="post_btns">
-      <my-button style="border-color: darkorange">Удалить</my-button>
+    <div class="post__btns">
+      <my-button style="border-color: darkorange"
+      @click="$emit('remove', post)">Удалить</my-button>
     </div>
   </div>
 </template>
