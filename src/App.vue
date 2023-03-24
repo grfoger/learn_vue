@@ -1,13 +1,19 @@
 <template>
   <div class="app">
     <h1>Пользователи</h1>
-    <my-button @click="showDialog">
-      Добавить
-    </my-button>
+    <div class="app__btns">
+      <my-button @click="showDialog">
+        Добавить
+      </my-button>
+      <my-select v-model="selectedSort"
+                 :options="sortOptions"
+      />
+    </div>
     <my-dialog v-model:show="dialogVisible">
       <post-form @create="createPost"/>
     </my-dialog>
-    <post-list :posts="posts" @remove="removePost"/>
+    <post-list :posts="posts" @remove="removePost" v-if="!isPostLoading"/>
+    <div v-else>Идёт загрузка...</div>
   </div>
 </template>
 
@@ -15,6 +21,7 @@
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import MyDialog from "@/components/UI/MyDialog";
+import axios from "axios";
   export default {
     components: {
       MyDialog,
@@ -22,12 +29,14 @@ import MyDialog from "@/components/UI/MyDialog";
     },
     data() {
       return {
-        posts: [
-          {id:1, title: "JS", body: "Description"},
-          {id:2, title: "JS2", body: "Description2"},
-          {id:3, title: "JS3", body: "Description3"},
-        ],
+        posts: [],
         dialogVisible: false,
+        isPostLoading: false,
+        selectedSort: '',
+        sortOptions: [
+          {value: 'title', name: 'По названию'},
+          {value: 'body', name: 'По содержанию'}
+        ]
       }
     },
     methods: {
@@ -40,6 +49,25 @@ import MyDialog from "@/components/UI/MyDialog";
       },
       showDialog() {
           this.dialogVisible = true;
+      },
+      async fetchPosts() {
+        try {
+          this.isPostLoading = true;
+            const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=10");
+            this.posts = response.data;
+        } catch (e) {
+          alert("Error")
+        } finally {
+          this.isPostLoading = false;
+        }
+      }
+    },
+    mounted() {
+      this.fetchPosts()
+    },
+    watch: {
+      selectedSort(newValue) {
+        console.log(newValue);
       }
     }
   }
@@ -53,6 +81,11 @@ import MyDialog from "@/components/UI/MyDialog";
 }
 .app {
   padding: 20px;
+}
+.app__btns {
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 </style>
